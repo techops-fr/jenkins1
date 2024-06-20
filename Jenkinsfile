@@ -16,7 +16,7 @@ pipeline {
         echo "JENKINS_URL ${env.JENKINS_URL}"
         echo "MY_VAR ${env.MY_VAR}"
         echo "MY_NUMBER ${env.MY_NUMBER}"
-        sh 'print env'
+        sh 'printenv'
       }
     }
   }
