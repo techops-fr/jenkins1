@@ -11,9 +11,10 @@ pipeline {
         }
         stage('Déployer en production') {
             when {
-                allOf { // Toutes les conditions doivent être rempli
-                    branch 'main' // La branch est main
-                    environment name: 'DEPLOY_PROD', value: true // DEPLOY_PROD est vrai
+                allOf { // Toutes les conditions doivent être remplies
+                    branch 'main' // Si la branch est main
+                    equals expected: true, actual: params.DEPLOY_PROD // Si le param DEPLOY_PROD est vrai
+                    // expression { params.DEPLOY_PROD } // Equivalent : Si le param.DEPLOY est vrai
                 }
             }
             steps {
