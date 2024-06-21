@@ -1,0 +1,25 @@
+pipeline {
+    agent any
+    parameters { // Les paramatres avec "Build with parameters" dans l'interface
+      booleanParam(name: "DEPLOY_PROD", defaultValue: false, description: "Déploiement en Production")
+    }
+    stages {
+        stage('Build Stage') {
+            steps {
+                echo 'Bonjour le monde - Etape de Build'
+            }
+        }
+        stage('Déployer en production') {
+            when {
+                allOf { // Toutes les conditions doivent être remplies
+                    branch 'main' // Si la branche est main
+                    equals expected: true, actual: params.DEPLOY_PROD // Si le param DEPLOY_PROD est vrai
+                    // expression { params.DEPLOY_PROD } // Equivalent : Si le param.DEPLOY est vrai
+                }
+            }
+            steps {
+                echo 'Déploiement en cours'
+            }
+        }
+    }
+}

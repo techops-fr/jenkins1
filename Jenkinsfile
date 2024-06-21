@@ -1,25 +1,33 @@
 pipeline {
-    agent any
-    parameters { // Les paramatres avec "Build with parameters" dans l'interface
-      booleanParam(name: "DEPLOY_PROD", defaultValue: false, description: "Déploiement en Production")
-    }
-    stages {
-        stage('Build Stage') {
+  agent any
+
+
+  options {
+    // failFast pour tous les stages parallel
+    parallelAlwaysFailFast()
+  }
+  
+
+  stages {
+      stage('Build général') {
+        failFast: true
+        parallel {
+          stage('Build Backend') {
             steps {
-                echo 'Bonjour le monde - Etape de Build'
+              echo "Build du backend"
             }
-        }
-        stage('Déployer en production') {
-            when {
-                allOf { // Toutes les conditions doivent être remplies
-                    branch 'main' // Si la branch est main
-                    equals expected: true, actual: params.DEPLOY_PROD // Si le param DEPLOY_PROD est vrai
-                    // expression { params.DEPLOY_PROD } // Equivalent : Si le param.DEPLOY est vrai
-                }
-            }
+          }
+          stage('Build Frontend') {
             steps {
-                echo 'Déploiement en cours'
-            }
+              echo "Build du frontend"
+              }
+          }
         }
-    }
+      }
+      stage("Déploiement production"){
+        steps {
+          echo "Deploiement en production"
+        }
+      }
+  }
 }
