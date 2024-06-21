@@ -15,7 +15,7 @@ pipeline {
         echo "Build!"
       }
     }
-    stage('Deployment production')
+    stage('Deployment production') {
       input {
         message "Voulez-vous déployer en production ?"
         ok "Oui, je déploie en prod"
@@ -28,6 +28,7 @@ pipeline {
         echo "User : ${USER_SUBMIT}"
         echo "Version ${VERSION}"
         echo "Deploy !"
+        }
       }
     }
   }
