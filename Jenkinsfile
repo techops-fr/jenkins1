@@ -3,6 +3,7 @@ pipeline {
 
   triggers {
     cron("*/2 * * * *") // Déclenchement du pipeline toutes les 2 minutes
+    poolSCM("*/2 * * * *") // Vérification des modif sur Git toutes les 2 minutes
   }
 
   stages {
