@@ -1,30 +1,31 @@
 pipeline {
   agent any
 
-  // options {
-  //   // failFast pour tous les stages parallel
-  //   parallelsAlwaysFailFast()
-  // }
-
   stages {
-    stage('Build général en parallèle') {
-      failFast true
-      parallel {
-        stage('Build Backend') {
-          steps {
-            echo "Build du backend"
+    stage('Build and test') {
+      matrix {
+        axes {
+          axis {
+            name 'PLATFORM'
+            values 'linux', 'macos', 'windows'
+          }
+          axis {
+            name 'BROWSER'
+            values 'firefox', 'chrome', 'safari'
           }
         }
-        stage('Build Frontend') {
-          steps {
-            echo "Build du frontend"
+        stages {
+          stage('Build'){
+            steps {
+              echo "Etape de build pour ${BROWSER} sur ${PLATFORM}"
+            }
+          }
+          stage('Tests'){
+            steps {
+              echo "Etape de test pour ${BROWSER} sur ${PLATFORM}"
+            }
           }
         }
-      }
-    }
-    stage("Déploiement production"){
-      steps {
-        echo "Deploiement en production"
       }
     }
   }
