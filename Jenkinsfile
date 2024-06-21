@@ -8,7 +8,7 @@ pipeline {
 
   stages {
     stage('Build général en parallèle') {
-      failFast: true
+      failFast true
       parallel {
         stage('Build Backend') {
           steps {
