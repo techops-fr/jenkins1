@@ -24,14 +24,15 @@ pipeline {
         parameters {
           string(name: "VERSION", defaultValue:"lastest", description:"Une version déployée")
         }
+      }
       steps {
         echo "User : ${USER_SUBMIT}"
         echo "Version ${VERSION}"
-        echo "Deploy !"
-        }
+        echo "Deploy !" 
       }
     }
   }
+}
 
   post {
     always {
