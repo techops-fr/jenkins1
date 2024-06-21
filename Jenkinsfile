@@ -1,30 +1,24 @@
 pipeline {
-  agent any
-
-  stages {
-    stage('build') {
-      options {
-        timestamps()
-      }
-      steps {
-        echo "Build!"
-      }
+    agent any
+    parameters { // Les paramatres avec "Build with parameters" dans l'interface
+      booleanParam(name: "DEPLOY_PROD", defaultValue: false, description: "Déploiement en Production")
     }
-    stage('Deployment production') {
-      input {
-        message "Voulez-vous déployer en production ?"
-        ok "Oui, je déploie en prod"
-        submitter 'admin, devops'
-        submitterParameter 'USER_SUBMIT'
-        parameters {
-          string(name: "VERSION", defaultValue:"lastest", description:"Une version déployée")
+    stages {
+        stage('Build Stage') {
+            steps {
+                echo 'Bonjour le monde - Etape de Build'
+            }
         }
-      }
-      steps {
-        echo "User : ${USER_SUBMIT}"
-        echo "Version ${VERSION}"
-        echo "Deploy !" 
-      }
+        stage('Déployer en production') {
+            when {
+                allOf { // Toutes les conditions doivent être rempli
+                    branch 'main' // La branch est main
+                    environment name: 'DEPLOY_PROD', value: true // DEPLOY_PROD est vrai
+                }
+            }
+            steps {
+                echo 'Déploiement en cours'
+            }
+        }
     }
-  }
 }
