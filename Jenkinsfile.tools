@@ -1,10 +1,14 @@
 pipeline {
   agent any
 
+  tools {
+    nodejs "node21"
+  }
+
   stages {
     stage('build') {
       steps {
-        echo "Build fron Jenkins !"
+        sh "node -v"
       }
     }
   }
